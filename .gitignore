@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtual environments
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+*.env
+
+# Django stuff:
+*.log
+local_settings.py
+media/
+staticfiles/
+
+# Environment variables
+.env
+.env.*
+
+# VS Code
+.vscode/
+
+# MyPy / coverage / pytest / test cache
+.mypy_cache/
+.coverage
+.tox/
+.cache/
+.pytest_cache/
+htmlcov/
+
+# Migrations 
+**/migrations/*.py
+!**/migrations/__init__.py

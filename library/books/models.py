@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from authors.models import Author 
 
 GENRE_CHOICES = [
     ('fiction', 'Fiction'),
@@ -31,7 +32,7 @@ class Book(models.Model):
     description = models.TextField(null=True, blank=True)
     amount = models.PositiveIntegerField(default=10)
     genre = models.CharField(max_length=100, choices=GENRE_CHOICES, null=False)
-    author = models.ForeignKey('Author', on_delete=models.CASCADE, related_name='books')
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
     photo = models.ImageField(upload_to='book_photos/', null=True, blank=True)
 
     class Meta:
