@@ -18,12 +18,15 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from users.views import RegisterView, LogoutView, CreateProfileView, ProfileDetailUpdateView
+from users.views import RegisterView, LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain'), #login
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     #path('api/logout/', LogoutView.as_view(), name='auth_logout'),
-    path("api/", include("users.urls")),
+    path('api/users/', include('users.urls')),
+    path('api/books/', include('books.urls')),
+    path('api/authors/', include('authors.urls')),
+    path('api/orders/', include('orders.urls')),
 ]

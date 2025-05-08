@@ -1,11 +1,13 @@
-from rest_framework import generics, status
-from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework import generics, status, viewsets
+from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import User, Profile
-from .permissions import IsReader
-from .serializers import RegisterSerializer, ProfileSerializer
+
+from .models import Profile, User
+from .permissions import IsReader, IsLibrarian
+from .serializers import ProfileSerializer, RegisterSerializer, UserSerializer
+from .utils import safe_operation
 
 
 class RegisterView(generics.CreateAPIView):
@@ -13,6 +15,7 @@ class RegisterView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
     serializer_class = RegisterSerializer
 
+    @safe_operation
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -47,14 +50,38 @@ class LogoutView(APIView):
                             status=status.HTTP_400_BAD_REQUEST)
                             """
 
-class CreateProfileView(generics.CreateAPIView):
+class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
-    permission_classes = [IsAuthenticated, IsReader]
 
-class ProfileDetailUpdateView(generics.RetrieveUpdateAPIView):
-    serializer_class = ProfileSerializer
-    permission_classes = [IsAuthenticated, IsReader]
+    def get_permissions(self):
+        if self.action == 'retrieve':
+            permission_classes = [IsReader | IsLibrarian]
+        elif self.action == 'list':
+            permission_classes = [IsLibrarian]
+        else:
+            permission_classes = [IsReader]
+    
+        return [permission() for permission in permission_classes]
 
-    def get_object(self):
-        return self.request.user.profile
+    @safe_operation
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+
+    @safe_operation
+    def update(self, request, *args, **kwargs):
+        return super().update(request, *args, **kwargs)
+
+    @safe_operation
+    def retrieve(self, request, *args, **kwargs):
+        return super().retrieve(request, *args, **kwargs)
+
+    @safe_operation
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = User.objects.all().order_by('-created_at')
+    serializer_class = UserSerializer
+    permission_classes = [ IsLibrarian | IsAdminUser] 

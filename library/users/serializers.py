@@ -32,10 +32,14 @@ class RegisterSerializer(serializers.ModelSerializer):
         """Create and return a new user instance."""
         validated_data.pop('password2', None)
 
+        role = validated_data['role']
+        is_staff = role.lower() == 'librarian'
+
         user = User.objects.create(
             username=validated_data['username'],
             email=validated_data['email'],
             role=validated_data['role'],
+            is_staff=is_staff,
         )
 
         user.set_password(validated_data['password'])
@@ -92,3 +96,16 @@ class ProfileSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
+
+class UserEmailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['email']
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        exclude = ['password', 'user_permissions', 'groups']
+        read_only_fields = ['user_id', 'created_at', 'updated_at']

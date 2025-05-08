@@ -9,10 +9,13 @@ from django.urls import reverse
 from users.models import User
 from books.models import Book
 
+
 ORDER_STATUS_CHOICES = [
-    ('pending', 'Pending'),  # User ordered but hasn't taken the book yet
+    ('pending', 'Pending'),    # User ordered but hasn't taken the book yet
     ('borrowed', 'Borrowed'),  # User took the book
     ('returned', 'Returned'),  # Book has been returned
+    ('expired', 'Expired'),    # User did not return a book on time
+    ('closed', 'Closed'),      # After user returned a book or did not take any book
 ]
 
 class Order(models.Model):
@@ -29,10 +32,32 @@ class Order(models.Model):
             raise ValidationError("An order must be 'borrowed' before it can be marked as 'returned'.")
 
     def save(self, *args, **kwargs):
-        """Calculate due date based on weeks."""
-        if self.weeks:
-            self.due_date = self.created_at + timedelta(weeks=self.weeks)
-        super(Order, self).save(*args, **kwargs)
+        now = timezone.now()
+
+        if self._state.adding:
+            self.status = 'pending'
+            self.due_date = now + timedelta(days=3)
+
+        elif self.status == 'borrowed':
+            self.due_date = now + timedelta(weeks=self.weeks)
+
+        elif self.status == 'pending' and self.due_date is None:
+            self.due_date = now + timedelta(days=3)
+
+        elif self.status == 'returned':
+            self.status = 'closed'
+
+        super().save(*args, **kwargs)
+
+    def check_expiration(self):
+        """Automatically update status if due_date has passed."""
+        if self.due_date and self.due_date < timezone.now():
+            if self.status == 'borrowed':
+                self.status = 'expired'
+                self.save()
+            elif self.status == 'pending':
+                self.status = 'closed'
+                self.save()
 
     class Meta:
         verbose_name = "Order"
