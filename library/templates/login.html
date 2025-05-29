@@ -1,0 +1,75 @@
+{% load socialaccount %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Login to the library system using Google OAuth with your preferred role." />
+    <title>Login with Google</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f4f8;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 1rem;
+        }
+        main {
+            background: white;
+            padding: 2rem 3rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 360px;
+            width: 100%;
+            text-align: center;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+        .login-links a {
+            display: block;
+            margin: 0.75rem 0;
+            padding: 14px 24px;
+            background-color: #4285f4;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: background-color 0.3s ease, box-shadow 0.2s ease;
+            user-select: none;
+        }
+        .login-links a:hover,
+        .login-links a:focus {
+            background-color: #357ae8;
+            box-shadow: 0 0 8px rgba(53,122,232,0.6);
+            outline: none;
+        }
+        .login-links a:focus-visible {
+            outline: 3px solid #357ae8;
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <main role="main" aria-label="Google login options">
+        <h2>Login with Google</h2>
+        <nav class="login-links" aria-label="Select login role">
+            <a href="{% provider_login_url 'google'%}?role=reader" rel="nofollow noopener noreferrer" aria-describedby="desc-reader">
+                Login as Reader
+            </a>
+            <a href="{% provider_login_url 'google' %}?role=librarian" rel="nofollow noopener noreferrer" aria-describedby="desc-librarian">
+                Login as Librarian
+            </a>
+        </nav>
+    </main>
+</body>
+</html>
+
+ 

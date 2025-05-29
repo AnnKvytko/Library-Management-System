@@ -16,12 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import TemplateView
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from users.views import RegisterView, LogoutView
+from users.views import PasswordResetConfirmView, PasswordResetRequestView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('accounts/', include('allauth.urls')),
+    path('accounts/', include(('allauth.socialaccount.urls', 'socialaccount'), namespace='socialaccount')),
+    path("custom-login/", TemplateView.as_view(template_name="login.html"), name="custom-login"),
+    #path('accounts/', include('allauth.socialaccount.urls')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain'), #login
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     #path('api/logout/', LogoutView.as_view(), name='auth_logout'),
@@ -29,4 +34,6 @@ urlpatterns = [
     path('api/books/', include('books.urls')),
     path('api/authors/', include('authors.urls')),
     path('api/orders/', include('orders.urls')),
+    path('password-reset/', PasswordResetRequestView.as_view(), name='password_reset'),
+    path('password-reset-confirm/<str:uidb64>/<str:token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
 ]
