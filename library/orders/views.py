@@ -1,10 +1,18 @@
-from rest_framework import viewsets, status, filters
+from django.core.mail import send_mail
+from django.db import transaction
+
+from rest_framework import filters, status, viewsets
 from rest_framework.response import Response
+
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Order, ORDER_STATUS_CHOICES
-from .serializers import OrderSerializer
-from users.permissions import IsReader, IsLibrarian
+
+from books.models import Book
+from orders.models import Order, ORDER_STATUS_CHOICES
+from orders.serializers import OrderSerializer
+from users.models import User
+from users.permissions import IsLibrarian, IsReader
 from users.utils import safe_operation
+
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all().order_by('-created_at')
@@ -46,6 +54,22 @@ class OrderViewSet(viewsets.ModelViewSet):
         if status_value and status_value in dict(ORDER_STATUS_CHOICES):
             instance.status = status_value
             updated = True
+            
+            if status_value == "borrowed":
+                user = instance.user
+                book = instance.book
+                email = user.email
+                title = getattr(book, 'title', 'book')
+                due_date = instance.due_date.strftime('%Y-%m-%d')
+                send_mail(
+                    "Book was taken from library",
+                    f"You successfully picked up the book \"{title}\" from Library\n"
+                    f"Please return it back till {due_date}. Thank you.",
+                    "noreply@library.com",
+                    [email],
+                    fail_silently=False,
+                )
+
 
         if weeks_value is not None:
             try:
@@ -70,7 +94,34 @@ class OrderViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     @safe_operation
+    @transaction.atomic
     def create(self, request, *args, **kwargs):
+        
+        user_id = request.data.get("user_id")
+        book_id = request.data.get("book_id")
+
+        user = User.objects.get(pk=user_id)
+        book = Book.objects.get(pk=book_id)
+        
+        if book.amount < 1:
+            return Response(
+            {"detail": "This book is currently out of stock."},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+        book.amount -= 1
+        book.save()
+
+        email = user.email
+        title = getattr(book, 'title', 'book')
+
+        send_mail(
+            "Book Order Created",
+            f"Your order for the book \"{title}\" has been successfully created. "
+            "Please pick it up from the library within 3 days. Thank you.",
+            "noreply@library.com",
+            [email],
+            fail_silently=False,
+        )
         return super().create(request, *args, **kwargs)
 
     @safe_operation
