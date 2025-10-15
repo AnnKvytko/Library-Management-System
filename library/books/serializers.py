@@ -1,6 +1,6 @@
 from datetime import datetime
 from rest_framework import serializers
-from .models import Book
+from .models import Book, FavoriteBooks, ReadBooks
 from authors.serializers import AuthorSerializer
 from authors.models import Author
 
@@ -63,3 +63,31 @@ class BookTitleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         fields = ['title']
+
+
+class FavoriteBooksSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FavoriteBooks
+        fields = ['id', 'user', 'book', 'created_at']
+        read_only_fields = ['id', 'created_at']
+
+    def validate(self, data):
+        user = self.context['request'].user
+        book = data['book']
+        if FavoriteBooks.objects.filter(user=user, book=book).exists():
+            raise serializers.ValidationError("This book is already in your favorites.")
+        return data
+
+
+class ReadBooksSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReadBooks
+        fields = ['id', 'user', 'book', 'created_at']
+        read_only_fields = ['id', 'created_at']
+
+    def validate(self, data):
+        user = self.context['request'].user
+        book = data['book']
+        if ReadBooks.objects.filter(user=user, book=book).exists():
+            raise serializers.ValidationError("You have already marked this book as read.")
+        return data

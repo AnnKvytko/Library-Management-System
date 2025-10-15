@@ -1,6 +1,7 @@
 import uuid
 from django.db import models
 from authors.models import Author 
+from users.models import User
 
 GENRE_CHOICES = [
     ('autobiography', 'Autobiography'),
@@ -51,3 +52,33 @@ class Book(models.Model):
     def __str__(self):
         author = f"{self.author.first_name} {self.author.last_name}" if self.author else "Unknown Author"
         return f"{self.title} by {author}"
+
+
+class FavoriteBooks(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="favorite_books")
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="favorited_by")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'book')
+        verbose_name = "Favorite Book"
+        verbose_name_plural = "Favorite Books"
+
+    def __str__(self):
+        return f"{self.user.email} likes {self.book.title}"
+
+
+class ReadBooks(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="read_books")
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="read_by")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'book')
+        verbose_name = "Read Book"
+        verbose_name_plural = "Read Books"
+
+    def __str__(self):
+        return f"{self.user.email} has read {self.book.title}"

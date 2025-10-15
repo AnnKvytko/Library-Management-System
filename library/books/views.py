@@ -1,10 +1,10 @@
 from django_filters.rest_framework import DjangoFilterBackend
 
-from rest_framework import filters, status, viewsets
+from rest_framework import filters, status, viewsets, permissions
 from rest_framework.response import Response
 
-from .models import Book
-from .serializers import BookSerializer
+from .models import Book, FavoriteBooks, ReadBooks
+from .serializers import BookSerializer, FavoriteBooksSerializer, ReadBooksSerializer
 from users.permissions import IsGuest, IsLibrarian, IsReader
 from users.utils import safe_operation
 
@@ -52,3 +52,45 @@ class BookViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         instance.delete()
         return Response({"detail": "Book deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+
+class FavoriteBooksViewSet(viewsets.ModelViewSet):
+    queryset = FavoriteBooks.objects.all()
+    serializer_class = FavoriteBooksSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        return FavoriteBooks.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    @safe_operation
+    def create(self, request, *args, **kwargs):
+        return super().create(request, *args, **kwargs)
+
+    @safe_operation
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
+
+class ReadBooksViewSet(viewsets.ModelViewSet):
+    queryset = ReadBooks.objects.all()
+    serializer_class = ReadBooksSerializer
+    #permission_classes = [IsReader]
+    permission_classes = [] 
+
+    def get_queryset(self):
+        return ReadBooks.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        print("GETTING READ BOOKS FOR", self.request.user)
+        serializer.save(user=self.request.user)
+
+    #@safe_operation
+    #def create(self, request, *args, **kwargs):
+    #    return super().create(request, *args, **kwargs)
+
+    #@safe_operation
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
