@@ -54,10 +54,11 @@ class AddressSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     address = AddressSerializer(required=False)
+    username = serializers.CharField(source="user.username", read_only=True)   
 
     class Meta:
         model = Profile
-        fields = ['id', 'first_name', 'last_name', 'phone', 'address', 'photo']
+        fields = ['id', 'username', 'first_name', 'last_name', 'phone', 'address', 'photo']
         read_only_fields = ['id']
 
     def create(self, validated_data):
@@ -66,9 +67,6 @@ class ProfileSerializer(serializers.ModelSerializer):
 
         if Profile.objects.filter(user=user).exists():
             raise serializers.ValidationError("Profile already exists.")
-
-        if user.role.lower() != "reader":
-            raise serializers.ValidationError("Only users with the 'reader' role can create a profile.")
 
         address_instance = None
         if address_data:
@@ -101,7 +99,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 class UserEmailSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['email']
+        fields = ['user_id', 'email']
 
 
 class UserSerializer(serializers.ModelSerializer):

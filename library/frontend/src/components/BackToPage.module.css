@@ -1,0 +1,24 @@
+.backWrapper {
+  position: absolute;
+  top: 100px;
+  left: 0;
+  width: 100%;
+  text-align: left;
+  margin-bottom: 10px;
+  font-family: 'Marck Script', cursive;
+  z-index: 1000;
+}
+
+.backLink {
+  text-decoration: none;
+  color: rgb(242, 245, 255);
+  font-weight: 600;
+  font-size: 36px;
+  opacity: 0.9;
+  cursor: pointer;
+  padding-left: 30px;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}

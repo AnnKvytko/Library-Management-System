@@ -1,10 +1,12 @@
 from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework import filters, status, viewsets, permissions
+from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from .models import Book, FavoriteBooks, ReadBooks
-from .serializers import BookSerializer, FavoriteBooksSerializer, ReadBooksSerializer
+from .models import Book
+from .serializers import BookSerializer
 from users.permissions import IsGuest, IsLibrarian, IsReader
 from users.utils import safe_operation
 
@@ -15,7 +17,7 @@ class BookViewSet(viewsets.ModelViewSet):
 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     #GET /api/books/?genre=romance
-    filterset_fields = ['genre', 'publication_year', 'title']
+    filterset_fields = ['genre', 'publication_year', 'title', 'author']
     #GET /api/books/?search=orwell
     search_fields = ['title', 'genre', 'publication_year', 'author__first_name', 'author__last_name']
     #GET /api/books/?ordering=-publication_year
@@ -25,7 +27,9 @@ class BookViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
 
         if self.action in ['list', 'retrieve']:
-            permission_classes = [IsGuest | IsReader | IsLibrarian]
+            permission_classes = [AllowAny]
+        elif self.action in ['favorite', 'unfavorite', 'favorites']:
+            permission_classes = [IsReader]
         else:
             permission_classes = [IsLibrarian]
 
@@ -52,45 +56,21 @@ class BookViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         instance.delete()
         return Response({"detail": "Book deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
-
-
-class FavoriteBooksViewSet(viewsets.ModelViewSet):
-    queryset = FavoriteBooks.objects.all()
-    serializer_class = FavoriteBooksSerializer
-    permission_classes = [permissions.AllowAny]
-
-    def get_queryset(self):
-        return FavoriteBooks.objects.filter(user=self.request.user)
-
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
-    @safe_operation
-    def create(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
-
-    @safe_operation
-    def list(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
-
-
-class ReadBooksViewSet(viewsets.ModelViewSet):
-    queryset = ReadBooks.objects.all()
-    serializer_class = ReadBooksSerializer
-    #permission_classes = [IsReader]
-    permission_classes = [] 
-
-    def get_queryset(self):
-        return ReadBooks.objects.filter(user=self.request.user)
-
-    def perform_create(self, serializer):
-        print("GETTING READ BOOKS FOR", self.request.user)
-        serializer.save(user=self.request.user)
-
-    #@safe_operation
-    #def create(self, request, *args, **kwargs):
-    #    return super().create(request, *args, **kwargs)
-
-    #@safe_operation
-    def list(self, request, *args, **kwargs):
-        return super().list(request, *args, **kwargs)
+    
+    @action(detail=True, methods=["post"])
+    def favorite(self, request, pk=None):
+        book = self.get_object()
+        request.user.favorite_books.add(book)
+        return Response({"message": "added"})
+    
+    @action(detail=True, methods=["post"])
+    def unfavorite(self, request, pk=None):
+        book = self.get_object()
+        request.user.favorite_books.remove(book)
+        return Response({"message": "removed"})
+    
+    @action(detail=False, methods=["get"], permission_classes=[IsAuthenticated])
+    def favorites(self, request):
+        books = request.user.favorite_books.all()
+        serializer = self.get_serializer(books, many=True)
+        return Response(serializer.data)

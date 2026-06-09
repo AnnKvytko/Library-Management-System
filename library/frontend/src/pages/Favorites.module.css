@@ -1,0 +1,70 @@
+.page {
+  padding: 40px;
+  font-family: "Funnel Display", system-ui, sans-serif;
+  align-self: flex-start;
+  background-color: #9999FF;
+}
+
+.title {
+  font-size: 48px;
+  margin-bottom: 0px;
+  margin-top: 20px;
+  margin-left: 20px;
+  font-family: 'Marck Script', cursive;
+  color: #fff;
+  text-align: left;
+}
+
+.search {
+  width: 100%;
+  max-width: 500px;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 16px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  background-color: #bebef7;
+  padding: 30px;
+  border-radius: 12px;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 20px 20px;
+}
+
+.results {
+  font-size: 20px;
+  color: #fff;
+}
+
+.filters {
+  display: flex;
+  gap: 12px;
+}
+
+.filters select {
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  font-size: 16px;
+  color: #393975;
+}
+
+.addBookBtn {
+  padding: 4px 16px;
+  background-color: #fff;
+  color: #393975;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}

@@ -1,0 +1,77 @@
+.page {
+  padding: 40px;
+  padding-top: 60px;
+  background-color: #9999FF;
+  box-sizing: border-box;
+}
+
+.title {
+  font-size: 48px;
+  margin-bottom: 0px;
+  margin-left: 20px;
+  margin-top: -10px;
+  font-family: 'Marck Script', cursive;
+  color: #fff;
+  text-align: left;
+}
+
+.search {
+  width: 100%;
+  max-width: 500px;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 16px;
+  border: 1px solid #ccc;
+  margin-top: 20px;
+  background-color: #fff;
+  color: #333;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(200px, 1fr));
+  gap: 16px;
+  background-color: #bebef7;
+  padding: 30px;
+  border-radius: 12px;
+  font-family: "Funnel Display", system-ui, sans-serif;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px;
+}
+
+.results {
+  font-size: 20px;
+  color: #fff;
+}
+
+.filter {
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  font-size: 16px;
+  color: #393975;
+  font-family: "Funnel Display", system-ui, sans-serif;
+}
+
+.addAuthorBtn {
+  padding: 6px 10px;
+  margin-right: 10px;
+  background-color: #fff;
+  color: #393975;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+
+  display: block;
+}

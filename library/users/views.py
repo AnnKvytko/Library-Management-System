@@ -2,12 +2,17 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes
+from django.shortcuts import get_object_or_404
+
 
 from rest_framework import generics, status, viewsets, serializers
-from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework.decorators import action
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from urllib3 import request
 
 from .models import Profile, User
 from .permissions import IsReader, IsLibrarian
@@ -72,6 +77,7 @@ class LogoutView(APIView):
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_permissions(self):
         if self.action == 'retrieve':
@@ -79,13 +85,16 @@ class ProfileViewSet(viewsets.ModelViewSet):
         elif self.action == 'list':
             permission_classes = [IsLibrarian]
         else:
-            permission_classes = [IsReader]
+            permission_classes = [IsReader | IsLibrarian]
     
         return [permission() for permission in permission_classes]
 
-    @safe_operation
+
     def create(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
+        try:
+            return super().create(request, *args, **kwargs)
+        except Exception as e:
+            return Response({"detail": str(e)}, status=400)
 
     @safe_operation
     def update(self, request, *args, **kwargs):
@@ -98,12 +107,44 @@ class ProfileViewSet(viewsets.ModelViewSet):
     @safe_operation
     def list(self, request, *args, **kwargs):
         return super().list(request, *args, **kwargs)
+    
+    @action(detail=False, methods=["get", "patch"])
+    def me(self, request):
+        profile = get_object_or_404(Profile, user=request.user)
+
+        if request.method == "PATCH":
+            serializer = self.get_serializer(profile, data=request.data, partial=True)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data)
+
+        serializer = self.get_serializer(profile)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=["get"], url_path=r"by-user/(?P<user_id>[^/.]+)")
+    def by_user(self, request, user_id=None):
+        profile = get_object_or_404(Profile, user__user_id=user_id)
+        serializer = self.get_serializer(profile)
+        return Response(serializer.data)
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = User.objects.all().order_by('-created_at')
     serializer_class = UserSerializer
     permission_classes = [ IsLibrarian | IsAdminUser]
+
+    def get_queryset(self):
+        queryset = User.objects.all()
+        role = self.request.query_params.get("role")
+
+        if role:
+            queryset = queryset.filter(role=role)
+
+        return queryset
+
+    @action(detail=False, methods=["get"], permission_classes=[IsAuthenticated])
+    def me(self, request):
+        serializer = self.get_serializer(request.user)
+        return Response(serializer.data)
 
 
 class PasswordResetRequestView(APIView):
@@ -114,7 +155,7 @@ class PasswordResetRequestView(APIView):
         if user:
             uid = urlsafe_base64_encode(force_bytes(user.pk))
             token = default_token_generator.make_token(user)
-            reset_link = f"http://localhost:8000/password-reset-confirm/{uid}/{token}/"
+            reset_link = f"http://localhost:5173/reset-password/{uid}/{token}/"
             send_mail(
                 "Password Reset Request",
                 f"Click the link to reset your password: {reset_link}",

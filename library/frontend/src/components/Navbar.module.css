@@ -1,0 +1,88 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0 30px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+
+  font-family: "Marck Script", cursive;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.links {
+  display: flex;
+  gap: 25px;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.brand {
+  font-size: 50px;
+  color: #6e6ec2;
+}
+
+.link {
+  text-decoration: none;
+  color: #333;
+  font-size: 30px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: #6e6ec2;
+}
+
+.profileIcon {
+  display: flex;
+  padding: 6px;
+  border-radius: 50%;
+  text-decoration: none;
+  margin-right: 40px;
+  align-items: center;
+  background-color: #ffffff;
+  color: #333;
+  font-size: 40px;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.profileIcon:hover {
+  color: #6e6ec2;
+  transform: scale(1.1);
+}
+
+.profileIconAuthenticated {
+  display: flex;
+  padding: 6px;
+  border-radius: 50%;
+  text-decoration: none;
+  margin-right: 40px;
+  align-items: center;
+  background-color: #ffffff;
+  color: #6e6ec2;
+  font-size: 40px;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.profileIconAuthenticated:hover {
+  color: #b0b0ff;
+  transform: scale(1.1);
+}

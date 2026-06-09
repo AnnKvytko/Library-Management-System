@@ -1,6 +1,6 @@
 from datetime import datetime
 from rest_framework import serializers
-from .models import Book, FavoriteBooks, ReadBooks
+from .models import Book
 from authors.serializers import AuthorSerializer
 from authors.models import Author
 
@@ -21,8 +21,8 @@ class BookSerializer(serializers.ModelSerializer):
             'description',
             'amount',
             'genre',
-            'author',        # read-only nested representation
-            'author_id',     # to write via POST/PUT
+            'author',
+            'author_id',
             'photo',
         ]
         extra_kwargs = {
@@ -62,32 +62,4 @@ class BookSerializer(serializers.ModelSerializer):
 class BookTitleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = ['title']
-
-
-class FavoriteBooksSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = FavoriteBooks
-        fields = ['id', 'user', 'book', 'created_at']
-        read_only_fields = ['id', 'created_at']
-
-    def validate(self, data):
-        user = self.context['request'].user
-        book = data['book']
-        if FavoriteBooks.objects.filter(user=user, book=book).exists():
-            raise serializers.ValidationError("This book is already in your favorites.")
-        return data
-
-
-class ReadBooksSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ReadBooks
-        fields = ['id', 'user', 'book', 'created_at']
-        read_only_fields = ['id', 'created_at']
-
-    def validate(self, data):
-        user = self.context['request'].user
-        book = data['book']
-        if ReadBooks.objects.filter(user=user, book=book).exists():
-            raise serializers.ValidationError("You have already marked this book as read.")
-        return data
+        fields = ['id','title']

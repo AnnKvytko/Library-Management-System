@@ -15,13 +15,13 @@ ORDER_STATUS_CHOICES = [
     ('borrowed', 'Borrowed'),  # User took the book
     ('returned', 'Returned'),  # Book has been returned
     ('expired', 'Expired'),    # User did not return a book on time
-    ('closed', 'Closed'),      # After user returned a book or did not take any book
+    ('closed', 'Closed'),      # After user canceled the pending status or returned the book
 ]
 
 class Order(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name="orders")
-    book = models.ForeignKey(Book, on_delete=models.PROTECT, related_name="orders")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="orders")
     status = models.CharField(max_length=10, choices=ORDER_STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
     weeks = models.PositiveIntegerField(default=3)
@@ -35,8 +35,11 @@ class Order(models.Model):
         now = timezone.now()
 
         if self._state.adding:
-            self.status = 'pending'
-            self.due_date = now + timedelta(days=3)
+            if self.status == 'borrowed':
+                self.due_date = now + timedelta(weeks=self.weeks)
+            else:
+                self.status = 'pending'
+                self.due_date = now + timedelta(days=3)
 
         elif self.status == 'borrowed':
             self.due_date = now + timedelta(weeks=self.weeks)

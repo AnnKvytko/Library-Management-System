@@ -6,7 +6,10 @@ from users.serializers import UserEmailSerializer
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    status = serializers.ChoiceField(choices=ORDER_STATUS_CHOICES, default='pending', read_only=True)
+    status = serializers.ChoiceField(
+        choices=['pending', 'borrowed'],
+        default='pending'
+    )
     due_date = serializers.DateTimeField(read_only=True)
     created_at = serializers.DateTimeField(read_only=True)
 
@@ -28,6 +31,4 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        data.pop('user_id', None)
-        data.pop('book_id', None)
         return data

@@ -1,0 +1,196 @@
+.page {
+  padding: 40px;
+  padding-top: 40px;
+
+
+  background-color: #9999ff;
+
+  font-family: "Funnel Display", system-ui, sans-serif;
+}
+
+.title {
+  font-size: 48px;
+  color: #fff;
+  text-align: left;
+  margin-left: 90px;
+
+  margin-bottom: 16px;
+
+  font-family: "Marck Script";
+}
+
+.profileWord {
+  font-family: "Funnel Display", system-ui, sans-serif;
+  font-size: 36px;
+}
+
+.container {
+  display: flex;
+  margin-left: 40px;
+  gap: 60px;
+
+  background-color: #bebef7;
+
+  padding: 22px;
+  border-radius: 16px;
+
+  max-width: 1200px;
+}
+
+
+.leftSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 20px;
+}
+
+.avatar {
+  width: 240px;
+  height: 240px;
+
+  border-radius: 16px;
+  object-fit: cover;
+
+  background-color: #fff;
+}
+
+.uploadLabel {
+  background-color: #fff;
+  color: #6e6ec2;
+
+  padding: 10px 20px;
+  border-radius: 8px;
+
+  cursor: pointer;
+  font-weight: 600;
+
+  transition: 0.2s ease;
+}
+
+.uploadLabel:hover {
+  background-color: #6e6ec2;
+  color: #fff;
+}
+
+.fileInput {
+  display: none;
+}
+
+
+.formSection {
+  flex: 1;
+
+  background-color: #fff;
+
+  border-radius: 14px;
+  padding: 30px;
+}
+
+.row {
+  display: flex;
+  gap: 20px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+  margin-bottom: 24px;
+
+  flex: 1;
+}
+
+.inputGroup label {
+  color: #6e6ec2;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.inputGroup input {
+  padding: 14px 16px;
+  color: #333;
+  background-color: rgb(255, 255, 255);
+
+  border-radius: 10px;
+  border: 2px solid #b4b4da;
+
+  font-size: 16px;
+
+  transition: 0.2s ease;
+
+  font-family: "Funnel Display", system-ui, sans-serif;
+}
+
+.inputGroup input:focus {
+  outline: none;
+  border-color: #6e6ec2;
+}
+
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+
+}
+
+.cancelBtn,
+.saveBtn {
+  border: none;
+  border-radius: 10px;
+
+  padding: 14px 24px;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.cancelBtn {
+  background-color: #ececff;
+  color: #6e6ec2;
+}
+
+.cancelBtn:hover {
+  background-color: #dadaff;
+}
+
+.saveBtn {
+  background-color: #6e6ec2;
+  color: #fff;
+}
+
+.saveBtn:hover {
+  background-color: #5959b8;
+}
+
+
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .avatar {
+    width: 180px;
+    height: 180px;
+  }
+
+  .buttons {
+    flex-direction: column;
+  }
+
+  .cancelBtn,
+  .saveBtn {
+    width: 100%;
+  }
+}

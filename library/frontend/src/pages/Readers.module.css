@@ -1,0 +1,98 @@
+.page {
+  padding: 20px;
+  margin-top: 20px;
+
+  background-color: #9999FF;
+
+  font-family: "Funnel Display", system-ui, sans-serif;
+}
+
+.title {
+  font-size: 48px;
+  margin-left: -40px;
+
+  font-family: "Marck Script", cursive;
+  color: #fff;
+}
+
+.tableWrapper {
+  background-color: #bebef7;
+
+  padding: 18px;
+  border-radius: 12px;
+
+  margin: -10px 20px;
+}
+
+.table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  background-color: #fff;
+
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table th {
+  text-align: left;
+
+  padding: 14px;
+  padding-left: 40px;
+
+  background-color: #6e6ec2;
+  color: #fff;
+
+  font-size: 20px;
+}
+
+.table td {
+  padding: 20px 14px;
+  padding-left: 40px;
+
+  border-bottom: 1px solid #eee;
+
+  color: #2f2f41;
+  font-size: 18px;
+
+  text-align: left;
+}
+
+.row {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.row:hover {
+  background-color: #e6e6ff;
+}
+
+.usernameCell {
+  font-weight: 600;
+  font-size: 18px;
+
+  color: #1f1f2e;
+}
+
+.paginationWrapper {
+  margin-left: -20px;
+}
+
+@media (max-width: 900px) {
+  .table {
+    display: block;
+    overflow-x: auto;
+  }
+
+  .table th,
+  .table td {
+    padding-left: 20px;
+    font-size: 15px;
+  }
+
+  .title {
+    margin-left: 0;
+    text-align: left;
+  }
+}

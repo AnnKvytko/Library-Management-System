@@ -1,0 +1,87 @@
+.page {
+  padding: 40px;
+  background-color: #9999ff;
+  font-family: "Funnel Display", system-ui, sans-serif;
+}
+
+.title {
+  font-size: 48px;
+  color: #fff;
+  margin-bottom: 16px;
+  font-family: "Marck Script";
+}
+
+.container {
+  margin: 0 auto;
+  gap: 60px;
+
+  background-color: #bebef7;
+  padding: 22px;
+  border-radius: 16px;
+  max-width: 800px;
+}
+
+.formSection {
+  flex: 1;
+  background-color: #fff;
+  border-radius: 14px;
+  padding: 30px;
+}
+
+.inputGroup {
+  margin: 0 auto;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.inputGroup label {
+  color: #6e6ec2;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.inputGroup input,
+.inputGroup select {
+  color: #333;
+  background-color: rgb(255, 255, 255);
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 2px solid #b4b4da;
+  font-size: 16px;
+  font-family: "Funnel Display", system-ui, sans-serif;
+}
+
+.inputGroup input:focus,
+.inputGroup select:focus {
+  outline: none;
+  border-color: #6e6ec2;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.cancelBtn,
+.saveBtn {
+  border: none;
+  border-radius: 10px;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cancelBtn {
+  background-color: #ececff;
+  color: #6e6ec2;
+}
+
+.saveBtn {
+  background-color: #6e6ec2;
+  color: white;
+}

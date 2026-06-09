@@ -1,0 +1,263 @@
+.page {
+  min-height: 100vh;
+
+  padding: 40px;
+  margin-top: 180px;
+
+  background-color: #9999FF;
+
+  font-family: "Funnel Display", system-ui, sans-serif;
+}
+
+.container {
+  display: flex;
+  gap: 80px;
+
+  align-items: flex-start;
+}
+
+/* LEFT SIDE */
+.sidebar {
+  width: 280px;
+
+  background-color: #faeeffcb;
+
+  border-radius: 18px;
+
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image {
+  width: 180px;
+  height: 180px;
+
+  object-fit: cover;
+
+  border-radius: 50%;
+
+  border: 6px solid #ffffff;
+}
+
+.username {
+  font-size: 32px;
+
+  color: #6e6ec2;
+
+  font-family: "Marck Script", cursive;
+}
+
+/* RIGHT SIDE */
+.content {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* INFO SECTION */
+.infoSection {
+  width: 800px;
+
+  background-color: #bebef7;
+
+  border-radius: 18px;
+
+  padding: 30px;
+}
+
+.title {
+  margin-top: -20px;
+
+  margin-bottom: 8px;
+
+  font-size: 36px;
+
+  color: #ffffff;
+
+  font-family: "Marck Script", cursive;
+}
+
+.infoGrid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 24px;
+}
+
+.infoItem {
+  background-color: #ffffff;
+
+  border-radius: 12px;
+
+  padding: 6px;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.label {
+  color: #6e6ec2;
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.value {
+  color: #2f2f41;
+
+  font-size: 18px;
+
+  word-break: break-word;
+}
+
+.idItem {
+  justify-self: center;
+  width: fit-content;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background-color: #f7f7ff;
+  padding: 8px 20px;
+  border-radius: 12px;
+  margin-right: -400px;
+}
+
+.idValue {
+  font-size: 20px;
+  font-weight: 800;
+  color: #4f4fb3;
+
+  word-break: break-all;
+}
+
+/* ORDERS SECTION */
+.ordersSection {
+  width: 800px;
+
+  background-color: #bebef7;
+
+  border-radius: 18px;
+
+  padding: 6px 30px;
+}
+
+.ordersTitle {
+  margin-top: -10px;
+  margin-bottom: 0px;
+
+  color: #ffffff;
+
+  font-size: 36px;
+
+  font-family: "Marck Script", cursive;
+}
+
+.ordersCount {
+  font-family: "Funnel Display", system-ui, sans-serif;
+}
+
+/* TABLE */
+.tableWrapper {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  background-color: #ffffff;
+
+  border-radius: 12px;
+
+  overflow: hidden;
+  table-layout: fixed;
+}
+
+.table th {
+  background-color: #6e6ec2;
+
+  color: #ffffff;
+
+  text-align: center;
+
+  padding: 10px 24px;
+
+  font-size: 20px;
+}
+
+.table td {
+  padding: 12px 24px;
+
+  border-bottom: 1px solid #ececff;
+
+  color: #2f2f41;
+
+  font-size: 17px;
+}
+
+.row {
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.row:hover {
+  background-color: #f7f7ff;
+}
+
+.bookCell {
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* STATUS COLORS */
+.table td.pending {
+  color: #669fe1;
+  font-weight: 600;
+}
+
+.table td.borrowed {
+  color: #6e6ec2;
+  font-weight: 600;
+}
+
+.table td.closed {
+  color: #2e8b57;
+  font-weight: 600;
+}
+
+.table td.expired {
+  color: #d9534f;
+  font-weight: 600;
+}
+
+@media (max-width: 1100px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
+
+  .infoSection,
+  .ordersSection {
+    width: 100%;
+  }
+
+  .infoGrid {
+    grid-template-columns: 1fr;
+  }
+}

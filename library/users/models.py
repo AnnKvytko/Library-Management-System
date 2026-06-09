@@ -48,6 +48,12 @@ class User(AbstractBaseUser, PermissionsMixin):
         help_text='Specific permissions for this user.'
     )
 
+    favorite_books = models.ManyToManyField(
+        "books.Book",
+        blank=True,
+        related_name="favorited_by"
+    )
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'role']
 
@@ -88,14 +94,8 @@ class Profile(models.Model):
     address = models.OneToOneField(Address, on_delete=models.CASCADE, null=True, blank=True, related_name="profiles")
     photo = models.ImageField(upload_to="profile_photos/", null=True, blank=True)
 
-    def clean(self):
-        """Ensure only users with the 'reader' role can create a profile."""
-        if self.user.role.lower() != "reader":
-            raise ValidationError("Only users with the 'reader' role can create a profile.")
-
     def save(self, *args, **kwargs):
         """Run validation before saving."""
-        self.clean()
         super().save(*args, **kwargs)
     
     class Meta:

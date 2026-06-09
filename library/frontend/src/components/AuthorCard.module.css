@@ -1,0 +1,45 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 220px;
+  margin: 0 auto 20px auto;
+  text-align: center;
+}
+
+.image {
+  width: 189px;
+  height: 243px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-top: 12px;
+}
+
+.name {
+  font-size: 17px;
+  font-weight: 600;
+  color: #333;
+}
+
+.meta {
+  font-size: 15px;
+  color: #333;
+  margin-top: 0px;
+  margin-bottom: 8px;
+}
+
+.deleteBtn {
+  flex: 1;
+  padding: 6px 18px;
+  margin-bottom: 8px;
+  background-color: #6e6ec2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}

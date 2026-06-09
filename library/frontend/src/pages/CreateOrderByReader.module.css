@@ -1,0 +1,180 @@
+.page {
+  padding: 40px;
+  padding-top: 40px;
+  margin-top: -120px;
+
+  background-color: #9999ff;
+
+  font-family: "Funnel Display", system-ui, sans-serif;
+}
+
+.title {
+  font-size: 48px;
+  color: #fff;
+
+  text-align: left;
+  margin-left: 90px;
+  margin-bottom: 22px;
+
+  font-family: "Marck Script", cursive;
+}
+
+.container {
+  display: flex;
+  gap: 60px;
+
+  background-color: #bebef7;
+
+  padding: 22px;
+  border-radius: 16px;
+
+  max-width: 1000px;
+  margin-left: 40px;
+}
+
+
+.leftSection {
+  display: flex;
+  align-items: flex-start;
+}
+
+.image {
+  width: 260px;
+  height: 360px;
+
+  object-fit: cover;
+
+  border-radius: 14px;
+  background-color: #fff;
+}
+
+
+.formSection {
+  flex: 1;
+
+  background-color: #fff;
+
+  border-radius: 14px;
+}
+
+.bookInfo {
+  margin-bottom: 40px;
+}
+
+.bookTitle {
+  margin: 0;
+
+  font-size: 24px;
+  color: #333;
+
+  line-height: 1.3;
+}
+
+.author {
+  margin-top: 10px;
+
+  font-size: 20px;
+  color: #333333ac;
+
+  font-weight: 600;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+  margin-bottom: 40px;
+}
+
+.inputGroup label {
+  color: #333333ea;
+
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.inputGroup input {
+  width: 140px;
+
+  margin-left: 220px;
+
+  padding: 14px 16px;
+
+  border-radius: 10px;
+  border: 2px solid #afafdb;
+
+  font-size: 16px;
+  background-color: #ececff;
+  color: #333;
+
+  font-family: "Funnel Display", system-ui, sans-serif;
+
+  transition: 0.2s ease;
+}
+
+.inputGroup input:focus {
+  outline: none;
+  border-color: #8888d7;
+}
+
+
+.buttons {
+  display: flex;
+  gap: 20px;
+}
+
+.cancelBtn,
+.submitBtn {
+  width: 160px;
+  border: none;
+  border-radius: 10px;
+
+  padding: 14px 24px;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.cancelBtn {
+  background-color: #ececff;
+  color: #6e6ec2;
+  margin-left: 140px;
+}
+
+.cancelBtn:hover {
+  background-color: #dadaff;
+}
+
+.submitBtn {
+  background-color: #6e6ec2;
+  color: #fff;
+}
+
+.submitBtn:hover {
+  background-color: #5959b8;
+}
+
+
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .image {
+    width: 220px;
+    height: 320px;
+  }
+
+  .buttons {
+    flex-direction: column;
+  }
+
+  .cancelBtn,
+  .submitBtn {
+    width: 100%;
+  }
+}

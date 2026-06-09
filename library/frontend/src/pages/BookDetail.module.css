@@ -1,0 +1,158 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+.page {
+  position: relative;
+  padding: 0;
+  font-family: "Funnel Display", system-ui, sans-serif;
+  margin-top: 80px;
+}
+
+.containerWrapper {
+  background-color: #bebef7;
+  padding: 18px;
+  border-radius: 20px;
+
+  width: fit-content;
+
+  margin-left: 80px;
+}
+
+.container {
+  display: flex;
+  gap: 40px;
+  max-width: 100%;
+
+  background-color: #ffffff;
+  padding: 40px 40px 22px 40px;
+  border-radius: 12px;
+  align-items: flex-start;
+
+  height: auto;
+}
+
+.info {
+  flex: 1;
+}
+
+.title {
+  text-align: left;
+  margin-top: -8px;
+  line-height: 1.3;
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #333;
+  max-width: 500px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+.metaRow {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 14px;
+  align-items: flex-start;
+}
+
+.label {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+}
+
+.value {
+  font-size: 16px;
+  color: #333;
+}
+
+
+.description {
+  margin-top: 10px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  text-align: left;
+  max-width: 1000px;
+  min-width: 700px;
+}
+
+.imageColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.image {
+  width: 260px;
+  height: 360px;
+  object-fit: cover;
+  border-radius: 8px;
+  padding-left: 10px;
+  padding-right: 20px;
+}
+
+.actions {
+  display: flex;
+  gap: 20px;
+}
+
+.borrowBtn {
+  margin-left: -8px;
+  flex: 1;
+  padding: 0px 66px;
+  background-color: #6e6ec2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.favoriteBtn {
+  flex: 1;
+  padding: 14px 18px;
+  background-color: #393975;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.deleteBtn {
+  flex: 1;
+  padding: 8px 10px;
+  width: 110px;
+  background-color: #6e6ec2;
+  font-size: 17px;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.pageTitle {
+  font-size: 52px;
+  padding-top: 0px;
+  text-align: left;
+  margin-left: 130px;
+  color: #fff;
+  font-family: "Marck Script", cursive;
+  margin-bottom: 20px;
+}
+
+.bookId {
+  font-family: "Funnel Display", system-ui, sans-serif;
+  font-size: 32px;
+}
+
+.backWrapper {
+  position: absolute;
+  top: -180px;
+  width: 300px;
+}

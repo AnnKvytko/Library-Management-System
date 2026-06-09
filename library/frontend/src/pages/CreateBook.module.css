@@ -1,0 +1,242 @@
+.page {
+  padding: 40px;
+  margin-top: 10px;
+
+  background-color: #9999ff;
+
+  font-family: "Funnel Display", system-ui, sans-serif;
+}
+
+.title {
+  font-size: 48px;
+
+  color: #fff;
+
+  margin-bottom: 12px;
+
+  font-family: "Marck Script", cursive;
+}
+
+.container {
+  display: flex;
+  margin: 0 auto;
+
+
+  gap: 60px;
+
+  background-color: #bebef7;
+
+  padding: 22px;
+  border-radius: 16px;
+
+  max-width: 1000px;
+}
+
+/* LEFT SIDE */
+
+.leftSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 20px;
+}
+
+.cover {
+  width: 240px;
+  height: 340px;
+
+  border-radius: 16px;
+  object-fit: cover;
+
+  background-color: #fff;
+}
+
+.uploadLabel {
+  background-color: #fff;
+  color: #6e6ec2;
+
+  padding: 10px 20px;
+  border-radius: 8px;
+
+  cursor: pointer;
+  font-weight: 600;
+
+  transition: 0.2s ease;
+}
+
+.uploadLabel:hover {
+  background-color: #6e6ec2;
+  color: #fff;
+}
+
+.fileInput {
+  display: none;
+}
+
+/* RIGHT SIDE */
+
+.formSection {
+  flex: 1;
+
+  background-color: #fff;
+
+  border-radius: 14px;
+  padding: 20px 30px;
+}
+
+.row {
+  display: flex;
+  gap: 60px;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+
+  gap: 8px;
+  margin-bottom: 18px;
+
+  flex: 1;
+}
+
+.inputGroup label {
+  color: #6e6ec2;
+
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.inputGroup input {
+  padding: 10px 16px;
+
+  border-radius: 10px;
+  border: 2px solid #b4b4da;
+
+  font-size: 16px;
+
+  background-color: #fff;
+  color: #333;
+
+  transition: 0.2s ease;
+
+  font-family: "Funnel Display", system-ui, sans-serif;
+}
+
+.inputGroup input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #6e6ec2;
+}
+
+.inputGroup select {
+  padding: 10px 16px;
+
+  border-radius: 10px;
+  border: 2px solid #b4b4da;
+
+  font-size: 16px;
+
+  background-color: #fff;
+  color: #333;
+
+  transition: 0.2s ease;
+
+  font-family: "Funnel Display", system-ui, sans-serif;
+
+  cursor: pointer;
+}
+
+.inputGroup select:focus {
+  outline: none;
+  border-color: #6e6ec2;
+}
+
+
+.textarea {
+  min-height: 140px;
+
+  padding: 8px 16px;
+
+  border-radius: 10px;
+  border: 2px solid #b4b4da;
+
+  resize: vertical;
+
+  font-size: 16px;
+
+  font-family: "Funnel Display", system-ui, sans-serif;
+
+  transition: 0.2s ease;
+
+  background-color: #fff;
+  color: #333;
+}
+
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+
+  gap: 26px;
+}
+
+.cancelBtn,
+.saveBtn {
+  border: none;
+  border-radius: 10px;
+
+  padding: 14px 24px;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.cancelBtn {
+  background-color: #ececff;
+  color: #6e6ec2;
+}
+
+.cancelBtn:hover {
+  background-color: #dadaff;
+}
+
+.saveBtn {
+  background-color: #6e6ec2;
+  color: #fff;
+}
+
+.saveBtn:hover {
+  background-color: #5959b8;
+}
+
+
+@media (max-width: 900px) {
+
+  .container {
+    flex-direction: column;
+  }
+
+  .row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .cover {
+    width: 180px;
+    height: 260px;
+  }
+
+  .buttons {
+    flex-direction: column;
+  }
+
+  .cancelBtn,
+  .saveBtn {
+    width: 100%;
+  }
+}
