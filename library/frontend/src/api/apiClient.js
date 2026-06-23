@@ -1,6 +1,7 @@
 import axios from "axios";
+import { API_ROOT } from "./config";
 
-const BASE_URL = "http://127.0.0.1:8000/api";
+const BASE_URL = API_ROOT;
 
 function getAccessToken() {
   const token = localStorage.getItem("access");
@@ -30,7 +31,7 @@ async function refreshAccessToken() {
   const refresh = getRefreshToken();
   if (!refresh) return null;
 
-  const res = await fetch("http://127.0.0.1:8000/api/token/refresh/", {
+  const res = await fetch(`${BASE_URL}/token/refresh/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -104,7 +105,7 @@ export async function apiRequest(endpoint, options = {}, retry = true) {
 }
 
 const api = axios.create({
-  baseURL: "http://127.0.0.1:8000/api/",
+  baseURL: `${BASE_URL}/`,
 });
 
 export default api;

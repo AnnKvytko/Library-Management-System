@@ -1,4 +1,6 @@
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.shortcuts import redirect
 
 class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
     def save_user(self, request, sociallogin, form=None):
@@ -10,7 +12,7 @@ class CustomSocialAccountAdapter(DefaultSocialAccountAdapter):
             request.session.get('selected_role') or
             request.GET.get('role') or
             request.POST.get('role') or
-            'guest'
+            'reader'
         )
         user.role = selected_role
 

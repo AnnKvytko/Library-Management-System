@@ -70,12 +70,12 @@ class OrderViewSet(viewsets.ModelViewSet):
                     "Book was taken from library",
                     f"You successfully picked up the book \"{title}\".\n"
                     f"Please return it back till {due_date}.",
-                    "noreply@library.com",
+                    "library.managment.2026@gmail.com",
                     [email],
                     fail_silently=False,
                 )
 
-            if old_status != "closed" and status_value == "closed":
+            if status_value == "closed":
                 book = instance.book
                 book.amount += 1
                 book.save()
@@ -129,26 +129,35 @@ class OrderViewSet(viewsets.ModelViewSet):
         title = book.title
 
         if status_value == "pending":
-            send_mail(
-                "Book Order Created",
-                f'Your order for "{title}" has been successfully created.\n'
-                'Please pick it up from the library within 3 days.',
-                "noreply@library.com",
-                [email],
-                fail_silently=False,
-            )
+            print("About to send email")
+            try:
+                result = send_mail(
+                    "Book Order Created",
+                    f'Your order for "{title}" has been successfully created.\n'
+                    'Please pick it up from the library within 3 days.',
+                    "library.managment.2026@gmail.com",
+                    [email],
+                    fail_silently=False,
+                )
+                print("send_mail result:", result)
+                print("ORDER EMAIL RECIPIENT:", email)
+            except Exception as e:
+                print("Email sending failed:", e)
 
         elif status_value == "borrowed":
             order = Order.objects.get(pk=response.data["id"])
 
-            send_mail(
-                "Book Borrowed",
-                f'You have successfully borrowed "{title}".\n'
-                f'Please return it by {order.due_date.strftime("%d %B %Y")}.',
-                "noreply@library.com",
-                [email],
-                fail_silently=False,
-            )
+            try:
+                send_mail(
+                    "Book Borrowed",
+                    f'You have successfully borrowed "{title}".\n'
+                    f'Please return it by {order.due_date.strftime("%d %B %Y")}.',
+                    "library.managment.2026@gmail.com",
+                    [email],
+                    fail_silently=False,
+                )
+            except Exception as e:
+                print("Email sending failed:", e)
 
         return response
 

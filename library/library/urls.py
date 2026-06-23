@@ -21,7 +21,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from users.views import PasswordResetConfirmView, PasswordResetRequestView
+from users.views import GoogleLoginTokenView, PasswordResetConfirmView, PasswordResetRequestView, debug_user
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -36,6 +36,8 @@ urlpatterns = [
     path('api/orders/', include('orders.urls')),
     path('api/password-reset/', PasswordResetRequestView.as_view(), name='password_reset'),
     path('api/password-reset-confirm/<str:uidb64>/<str:token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path("api/auth/google-token/", GoogleLoginTokenView.as_view()),
+    path("debug-user/", debug_user),
 ]
 
 urlpatterns += static(

@@ -1,4 +1,6 @@
-const BASE_URL = "http://127.0.0.1:8000/api";
+import { API_ROOT } from "./config";
+
+const BASE_URL = API_ROOT;
 
 function getAuthHeaders(isJson = true) {
   const headers = {
@@ -34,7 +36,7 @@ export async function deleteBook(id) {
 
 export async function fetchBookById(id) {
   const response = await fetch(
-    `http://127.0.0.1:8000/api/books/${id}/`
+    `${BASE_URL}/books/${id}/`
   );
 
   if (!response.ok) {

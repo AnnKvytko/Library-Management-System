@@ -47,7 +47,7 @@ export default function Navbar() {
         <span className={styles.brand}>Library</span>
 
         <div className={styles.links}>
-          <Link to="/home" className={styles.link}>Home</Link>
+          <Link to="/" className={styles.link}>Home</Link>
           <Link to="/books" className={styles.link}>Books</Link>
           <Link to="/authors" className={styles.link}>Authors</Link>
         </div>

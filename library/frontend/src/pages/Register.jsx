@@ -4,10 +4,12 @@ import { FcGoogle } from "react-icons/fc";
 import styles from "./Register.module.css";
 
 import { registerUser } from "../api/authApi";
+import { API_BASE_URL } from "../api/config";
 
 export default function Register() {
 
   const navigate = useNavigate();
+  const apiBase = API_BASE_URL;
 
   const [formData, setFormData] = useState({
     username: "",
@@ -58,6 +60,15 @@ export default function Register() {
     }
   };
 
+  const handleGoogleLogin = () => {
+    const googleAuthUrl = new URL("/accounts/google/login/", apiBase);
+    const nextUrl = new URL("/auth/callback", window.location.origin);
+
+    googleAuthUrl.searchParams.set("next", nextUrl.toString());
+    googleAuthUrl.searchParams.set("role", formData.role);
+    window.location.assign(googleAuthUrl.toString());
+  };
+
   return (
     <div className={styles.container}>
 
@@ -79,13 +90,15 @@ export default function Register() {
         >
 
           <div className={styles.inputGroup}>
-            <label>Username</label>
+            <label>
+              Username <br/>
+              <small style={{ color: "#ffffff9c" }}> (required for normal registration, optional for Google)</small>
+            </label>
             <input
               name="username"
               type="text"
               value={formData.username}
               onChange={handleChange}
-              required
             />
           </div>
 
@@ -123,7 +136,7 @@ export default function Register() {
           </div>
 
           <div className={styles.inputGroup}>
-            <label>Register as</label>
+            <label>Register as <span style={{ color: "#b71414e1" }}>*</span></label>
 
             <select
               name="role"
@@ -149,9 +162,7 @@ export default function Register() {
           <button
             type="button"
             className={styles.googleButton}
-            onClick={() =>
-              navigate("/home")
-            }
+            onClick={handleGoogleLogin}
           >
             <FcGoogle size={24} />
             Continue with Google

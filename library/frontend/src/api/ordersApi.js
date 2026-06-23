@@ -1,4 +1,6 @@
-const BASE_URL = "http://127.0.0.1:8000/api/orders";
+import { API_ROOT } from "./config";
+
+const BASE_URL = `${API_ROOT}/orders`;
 
 function getAuthHeaders(isJson = true) {
   const headers = {

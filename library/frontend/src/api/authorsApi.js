@@ -1,6 +1,7 @@
 import api, { apiRequest } from "./apiClient";
+import { API_ROOT } from "./config";
 
-const BASE_URL = "http://127.0.0.1:8000/api";
+const BASE_URL = API_ROOT;
 
 export async function fetchAuthors({
   page,
@@ -61,7 +62,7 @@ export async function createAuthor(data) {
 
 export async function fetchAuthorById(id) {
   const response = await fetch(
-    `http://127.0.0.1:8000/api/authors/${id}/`
+    `${BASE_URL}/authors/${id}/`
   );
 
   if (!response.ok) {

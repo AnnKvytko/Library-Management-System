@@ -28,6 +28,7 @@ import BookSuccess from './pages/BookSuccess';
 import ResetPassword from './pages/ResetPassword';
 import EditBook from './pages/EditBook';
 import EditAuthor from './pages/EditAuthor';
+import AuthCallback from './pages/AuthCallback';
 
 function App() {
   return (
@@ -35,7 +36,7 @@ function App() {
       <Navbar />
 
       <Routes>
-        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/books" element={<Books />} />
         <Route path="/books/:id" element={<BookDetail />} />
 
@@ -71,6 +72,7 @@ function App() {
 
         <Route path="/edit-book/:id" element={<EditBook />} />
         <Route path="/edit-author/:id" element={<EditAuthor />} />
+        <Route path="/auth/callback" element={<AuthCallback />} />
       </Routes>
     </BrowserRouter>
   );

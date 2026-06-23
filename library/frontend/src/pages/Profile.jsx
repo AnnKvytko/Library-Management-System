@@ -53,7 +53,7 @@ export default function Profile() {
           address: data.address
             ? `${data.address.street} ${data.address.street_number}, ${data.address.city}, ${data.address.country}`
             : "",
-          image: data.photo || "/profile.jpg",
+          image: data.photo || "/nobody.jpg",
         };
 
         setUser(userObj);
@@ -143,7 +143,7 @@ export default function Profile() {
             className={styles.logoutBtn}
             onClick={() => {
               logout();
-              navigate("/home");
+              navigate("/");
             }}
           >
             Log out

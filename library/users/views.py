@@ -19,6 +19,14 @@ from .permissions import IsReader, IsLibrarian
 from .serializers import ProfileSerializer, RegisterSerializer, UserSerializer
 from .utils import safe_operation
 
+from django.http import JsonResponse
+
+def debug_user(request):
+    return JsonResponse({
+        "is_authenticated": request.user.is_authenticated,
+        "email": request.user.email if request.user.is_authenticated else None,
+    })
+
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
@@ -38,7 +46,7 @@ class RegisterView(generics.CreateAPIView):
             send_mail(
                 "Library registration",
                 f"Congratulations! You've been successfully registered at the Library as {role}.",
-                "noreply@library.com",
+                "library.managment.2026@gmail.com",
                 [email],
                 fail_silently=False,
             )
@@ -56,6 +64,25 @@ class RegisterView(generics.CreateAPIView):
         }
 
         return Response(response_data, status=status.HTTP_201_CREATED)
+    
+class GoogleLoginTokenView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+
+        refresh = RefreshToken.for_user(user)
+
+        return Response({
+            "user": {
+                "id": user.pk,
+                "username": user.username,
+                "email": user.email,
+                "role": user.role,
+            },
+            "access": str(refresh.access_token),
+            "refresh": str(refresh),
+        })
     
 class LogoutView(APIView):
     """
@@ -110,7 +137,11 @@ class ProfileViewSet(viewsets.ModelViewSet):
     
     @action(detail=False, methods=["get", "patch"])
     def me(self, request):
-        profile = get_object_or_404(Profile, user=request.user)
+        profile = Profile.objects.filter(user=request.user).first()
+
+        # 🔥 IMPORTANT: no profile yet → return empty response
+        if not profile:
+            return Response(None, status=200)
 
         if request.method == "PATCH":
             serializer = self.get_serializer(profile, data=request.data, partial=True)
@@ -146,6 +177,26 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
         serializer = self.get_serializer(request.user)
         return Response(serializer.data)
 
+    @action(detail=False, methods=["patch"], permission_classes=[IsAuthenticated])
+    def update_me(self, request):
+        user = request.user
+
+        username = request.data.get("username")
+        role = request.data.get("role")
+
+        if username:
+            user.username = username
+
+        if role:
+            user.role = role
+
+        user.save()
+
+        return Response({
+            "id": user.pk,
+            "username": user.username,
+            "role": user.role,
+        })
 
 class PasswordResetRequestView(APIView):
     permission_classes = [AllowAny]
@@ -159,7 +210,7 @@ class PasswordResetRequestView(APIView):
             send_mail(
                 "Password Reset Request",
                 f"Click the link to reset your password: {reset_link}",
-                "noreply@library.com",
+                "library.managment.2026@gmail.com",
                 [email],
                 fail_silently=False,
             )

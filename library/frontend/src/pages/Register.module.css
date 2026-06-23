@@ -24,7 +24,7 @@
 .title {
   font-size: 56px;
   margin-top: 80px;
-  margin-bottom: 12px;
+  margin-bottom: 2px;
 
   font-family: "Marck Script", cursive;
   color: #ffffff;
@@ -51,14 +51,15 @@
   color: #ffffff;
   font-size: 18px;
   font-weight: 600;
-  margin-left: 100px;
+  margin-left: 60px;
+  width: 400px;
 }
 
 .inputGroup input {
   width: 400px;
   margin-left: 40px;
 
-  padding: 12px 18px;
+  padding: 10px 18px;
 
   border: none;
   border-radius: 12px;
@@ -85,7 +86,7 @@
 }
 
 .button {
-  margin-top: 20px;
+  margin-top: 10px;
 
   padding: 14px 28px;
 

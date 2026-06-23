@@ -1,6 +1,7 @@
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
+from allauth.socialaccount.models import SocialAccount
 from .models import User, ROLE_CHOICES, Profile, Address
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -100,10 +101,23 @@ class UserEmailSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['user_id', 'email']
-
+        
 
 class UserSerializer(serializers.ModelSerializer):
+    is_social_user = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        exclude = ['password', 'user_permissions', 'groups']
-        read_only_fields = ['user_id', 'created_at', 'updated_at']
+        exclude = [
+            'password',
+            'user_permissions',
+            'groups',
+        ]
+        read_only_fields = [
+            'user_id',
+            'created_at',
+            'updated_at',
+        ]
+
+    def get_is_social_user(self, obj):
+        return SocialAccount.objects.filter(user=obj).exists()

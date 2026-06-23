@@ -1,7 +1,8 @@
 import { apiRequest } from "./apiClient";
+import { API_ROOT } from "./config";
 
 export async function loginUser(email, password) {
-  const res = await fetch("http://127.0.0.1:8000/api/token/", {
+  const res = await fetch(`${API_ROOT}/token/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -17,7 +18,7 @@ export async function loginUser(email, password) {
 }
 
 export async function registerUser(data) {
-  const res = await fetch("http://127.0.0.1:8000/api/users/register/", {
+  const res = await fetch(`${API_ROOT}/users/register/`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

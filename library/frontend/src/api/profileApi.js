@@ -1,4 +1,6 @@
-const BASE_URL = "http://127.0.0.1:8000/api/users/profiles";
+import { API_ROOT } from "./config";
+
+export const BASE_URL = "http://127.0.0.1:8000/api/users/profiles";
 
 function getAuthHeaders(isJson = true) {
   const headers = {
@@ -20,13 +22,20 @@ export async function getMyProfile() {
     headers: getAuthHeaders(false),
   });
 
+  if (response.status === 404) {
+    return null; // no profile yet
+  }
+
   if (!response.ok) {
     throw new Error("Failed to fetch profile");
   }
 
-  return response.json();
-}
+  const text = await response.text();
 
+  if (!text) return null;
+
+  return JSON.parse(text);
+}
 //
 // CREATE PROFILE (only if needed once)
 //

@@ -2,9 +2,11 @@ import { useState } from "react";
 import styles from "./Login.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../api/authApi";
+import { API_BASE_URL } from "../api/config";
 
 export default function Login() {
   const navigate = useNavigate();
+  const apiBase = API_BASE_URL;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,7 +36,6 @@ export default function Login() {
     }
   };
 
-
   const handleResetPassword = async () => {
     if (!email) {
       setError("Please enter your email first");
@@ -45,7 +46,7 @@ export default function Login() {
       setError(null);
 
       const response = await fetch(
-        "http://127.0.0.1:8000/api/password-reset/",
+        `${apiBase}/api/password-reset/`,
         {
           method: "POST",
           headers: {
@@ -62,10 +63,17 @@ export default function Login() {
       }
 
       setResetSent(true);
-
     } catch (err) {
       setError(err.message);
     }
+  };
+
+  const handleGoogleLogin = () => {
+    const googleAuthUrl = new URL("/accounts/google/login/", apiBase);
+    const nextUrl = new URL("/auth/callback", window.location.origin);
+
+    googleAuthUrl.searchParams.set("next", nextUrl.toString());
+    window.location.assign(googleAuthUrl.toString());
   };
 
   return (
@@ -74,7 +82,6 @@ export default function Login() {
         <h1 className={styles.title}>Welcome back</h1>
 
         <form className={styles.form} onSubmit={handleLogin}>
-
           <div className={styles.inputGroup}>
             <label>Email</label>
             <input
@@ -97,7 +104,6 @@ export default function Login() {
 
           {error && <p className={styles.errorText}>{error}</p>}
 
-          {/* RESET PASSWORD */}
           {error === "Wrong credentials" && (
             <p className={styles.registerText}>
               Forgot your password?{" "}
@@ -111,27 +117,25 @@ export default function Login() {
             </p>
           )}
 
-          {/* SUCCESS */}
           {resetSent && (
             <p className={styles.success}>
               Reset email sent! Check your inbox.
             </p>
           )}
 
-          {/* LOGIN BUTTON */}
           <button type="submit" className={styles.button} disabled={loading}>
             {loading ? "Logging in..." : "Log in"}
           </button>
 
+          {/* ✅ GOOGLE LOGIN FIXED */}
           <button
             type="button"
             className={styles.googleButton}
-            onClick={() => navigate("/home")}
+            onClick={handleGoogleLogin}
           >
             <img src="/google.png" alt="Google" className={styles.googleIcon} />
             Continue with Google
           </button>
-
         </form>
 
         <p className={styles.registerText}>

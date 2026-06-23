@@ -8,12 +8,18 @@ import {
   createProfile,
 } from "../api/profileApi";
 
+import { getCurrentUser } from "../api/authApi";
+
 export default function EditProfile() {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
   const [profileExists, setProfileExists] = useState(false);
 
+  // 🔥 NEW: onboarding flag
+  const [showOnboarding, setShowOnboarding] = useState(false);
+
+  // profile fields
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -28,26 +34,41 @@ export default function EditProfile() {
     photoFile: null,
   });
 
+  // 🔥 NEW: user onboarding fields
+  const [userData, setUserData] = useState({
+    username: "",
+    role: "reader",
+  });
+
   useEffect(() => {
     const loadProfile = async () => {
       try {
-        const data = await getMyProfile();
+        const user = await getCurrentUser();
+        const profile = await getMyProfile();
 
-        setProfileExists(true);
+        setProfileExists(!!profile);
 
-        setFormData({
-          first_name: data.first_name || "",
-          last_name: data.last_name || "",
-          phone: data.phone || "",
-          country: data.address?.country || "",
-          city: data.address?.city || "",
-          street: data.address?.street || "",
-          street_number: data.address?.street_number || "",
-          photo: data.photo || "/authors/nobody.jpg",
-          photoFile: null,
-        });
-      } catch {
-        setProfileExists(false);
+        if (profile) {
+          setFormData({
+            first_name: profile.first_name || "",
+            last_name: profile.last_name || "",
+            phone: profile.phone || "",
+            country: profile.address?.country || "",
+            city: profile.address?.city || "",
+            street: profile.address?.street || "",
+            street_number: profile.address?.street_number || "",
+            photo: profile.photo || "/authors/nobody.jpg",
+            photoFile: null,
+          });
+
+          setShowOnboarding(false);
+        } else {
+          // no profile yet
+          setShowOnboarding(user.is_social_user);
+        }
+
+      } catch (err) {
+        console.log(err);
       } finally {
         setLoading(false);
       }
@@ -58,6 +79,13 @@ export default function EditProfile() {
 
   const handleChange = (e) => {
     setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleUserChange = (e) => {
+    setUserData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
@@ -77,22 +105,37 @@ export default function EditProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const data = new FormData();
-
-    data.append("first_name", formData.first_name);
-    data.append("last_name", formData.last_name);
-    data.append("phone", formData.phone);
-
-    data.append("address.country", formData.country);
-    data.append("address.city", formData.city);
-    data.append("address.street", formData.street);
-    data.append("address.street_number", formData.street_number);
-
-    if (formData.photoFile) {
-      data.append("photo", formData.photoFile);
-    }
+    const token = localStorage.getItem("access");
 
     try {
+      // 1. 🔥 UPDATE USER (ONLY FOR GOOGLE USERS)
+      if (showOnboarding) {
+        await fetch("http://127.0.0.1:8000/api/users/update_me/", {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(userData),
+        });
+      }
+
+      // 2. PROFILE DATA
+      const data = new FormData();
+
+      data.append("first_name", formData.first_name);
+      data.append("last_name", formData.last_name);
+      data.append("phone", formData.phone);
+
+      data.append("address.country", formData.country);
+      data.append("address.city", formData.city);
+      data.append("address.street", formData.street);
+      data.append("address.street_number", formData.street_number);
+
+      if (formData.photoFile) {
+        data.append("photo", formData.photoFile);
+      }
+
       if (profileExists) {
         await updateMyProfile(data);
       } else {
@@ -114,6 +157,7 @@ export default function EditProfile() {
       <h1 className={styles.title}>Edit Profile</h1>
 
       <form className={styles.container} onSubmit={handleSubmit}>
+
         {/* LEFT SIDE */}
         <div className={styles.leftSection}>
           <img
@@ -131,10 +175,38 @@ export default function EditProfile() {
               onChange={handlePhotoChange}
             />
           </label>
+
+          
         </div>
 
         {/* RIGHT SIDE */}
         <div className={styles.formSection}>
+            {/* 🔥 GOOGLE ONBOARDING BLOCK */}
+          {showOnboarding && (
+            <div className={styles.row}>
+              <div className={styles.inputGroup}>
+                <label>Username</label>
+                <input
+                  name="username"
+                  value={userData.username}
+                  onChange={handleUserChange}
+                  required
+                />
+              </div>
+
+              <div className={styles.inputGroup}>
+                <label>Role</label>
+                <select
+                  name="role"
+                  value={userData.role}
+                  onChange={handleUserChange}
+                >
+                  <option value="reader">Reader</option>
+                  <option value="librarian">Librarian</option>
+                </select>
+              </div>
+            </div>
+          )}
           <div className={styles.row}>
             <div className={styles.inputGroup}>
               <label>First name</label>

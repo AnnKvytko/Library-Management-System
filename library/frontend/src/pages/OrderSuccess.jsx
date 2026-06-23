@@ -1,5 +1,8 @@
 import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 import styles from "./OrderSuccess.module.css";
+
+import { getCurrentUser } from "../api/authApi";
 
 export default function OrderSuccess() {
   const navigate = useNavigate();
@@ -7,8 +10,26 @@ export default function OrderSuccess() {
 
   const order = location.state;
 
+  const [userRole, setUserRole] = useState(null);
+
   const formatDate = (dateString) => {
     if (!dateString) return "";
+  
+  useEffect(() => {
+      const init = async () => {
+        try {
+          const user = await getCurrentUser();
+  
+          console.log("USER FROM API:", user);
+  
+          setUserRole(user?.role);
+        } catch (error) {
+          console.error("Failed to fetch user:", error);
+          setUserRole(null);
+        }
+      };
+    init();
+  }, []);
 
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -78,13 +99,22 @@ export default function OrderSuccess() {
         </p>
 
         <div className={styles.buttons}>
-          <button
-            className={styles.primaryBtn}
-            onClick={() => navigate("/orders")}
-          >
-            View orders
-          </button>
-
+          {userRole === "librarian" && (
+            <button
+              className={styles.primaryBtn}
+              onClick={() => navigate("/orders")}
+            >
+              View orders
+            </button>
+          )}
+          {userRole === "reader" && (
+            <button
+              className={styles.primaryBtn}
+              onClick={() => navigate("/taken-books")}
+            >
+              View taken books
+            </button>
+          )}
           <button
             className={styles.secondaryBtn}
             onClick={() => navigate("/books")}
