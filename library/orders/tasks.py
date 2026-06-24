@@ -18,8 +18,8 @@ def check_expired_orders_task():
                 order.status = 'expired'
                 send_mail(
                     subject='Library : Book Due Expired',
-                    message=f"Dear user,\n Your order for the book \"{book_title}\" is expired after {order.due_date.strftime('%Y-%m-%d')}.\nPlease return the book to th library or extend your reading term.Thank you for understanding.",
-                    from_email='library@example.com',
+                    message=f"Dear user,\n Your order for the book \"{book_title}\" is expired after {order.due_date.strftime('%Y-%m-%d')}.\nPlease return the book to the library.\nThank you for understanding.",
+                    from_email='library.managment.2026@gmail.com',
                     recipient_list=[user_email],
                     fail_silently=True,
                 )
@@ -28,7 +28,7 @@ def check_expired_orders_task():
                 send_mail(
                     subject='Library : Book Due Expired',
                     message=f"Dear user,\n Your order for the book \"{book_title}\" was closed as due date {order.due_date.strftime('%Y-%m-%d')} was expired.\nThank you for understanding.",
-                    from_email='library@example.com',
+                    from_email='library.managment.2026@gmail.com',
                     recipient_list=[user_email],
                     fail_silently=True,
                 )
@@ -58,7 +58,7 @@ def send_due_soon_reminders_task():
         send_mail(
             subject='Library Reminder: Book Due Soon',
             message=f"Dear user,\nThis is a reminder that the book \"{book_title}\" is due on {order.due_date.strftime('%Y-%m-%d')}. Please return it on time.\nThank you.",
-            from_email='library@example.com',
+            from_email='library.managment.2026@gmail.com',
             recipient_list=[user_email],
             fail_silently=True,
         )

@@ -47,6 +47,7 @@ export default function AuthorDetail() {
           last_name: authorData.last_name,
           nationality: authorData.nationality,
           born: authorData.date_of_birth,
+          died: authorData.date_of_death,
           image: authorData.photo,
           biography: authorData.description,
         });
@@ -151,9 +152,11 @@ export default function AuthorDetail() {
             </div>
 
             <div className={styles.metaRow}>
-              <span className={styles.label}>Date of Birth</span>
+              <span className={styles.label}>Date of Birth / Death</span>
+
               <span className={styles.value}>
-                {formatDate(author.born)}
+                {formatDate(author.born)} |{" "}
+                {author.died ? formatDate(author.died) : "—"}
               </span>
             </div>
 
